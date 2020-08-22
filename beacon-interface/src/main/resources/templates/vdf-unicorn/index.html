@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Brazilian Beacon</title>
+
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+  <link th:href="@{/css/scrolling-nav.css}" rel="stylesheet">
+
+  <!-- datetimepicker  -->
+  <link th:href="@{/vendor/bootstrap/css/bootstrap-datetimepicker.min.css}" rel="stylesheet">
+  <link th:href="@{/css/beacon.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Randomness Beacon - Unicorn</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#prototype">Prototype</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#viewer">Viewer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-primary text-white">
+    <div class="container text-center">
+      <h1>Inmetro Unicorn Application</h1>
+      <p class="lead">Inmetro's Randomness Beacon is a web service, part of the  SICCCiber project's effort to generate reliable and public sources of random numbers</p>
+<!--      Please note, this is the first beta release. More details about this project is available at <a href="https://siccciber.com.br/">SICCCiber</a> or by contacting the <a href="mailto:lainf@inmetro.gov.br">Inmetro Technology Lab</a>.-->
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+
+          <div class="alert alert-success" role="alert"  th:if="${not #strings.isEmpty(message)}">
+            <span th:text="${message}"></span>
+          </div>
+
+          <div class="alert alert-danger" role="alert"  th:if="${not #strings.isEmpty(error)}">
+            <span th:text="${error}"></span>
+          </div>
+
+          <h2>About this page</h2>
+          <p class="lead">This is a prototype of a random number service using the <a href="https://eprint.iacr.org/2015/366">Unicorn protocol</a>.
+          </p>
+
+          <p>
+            It allows users to publish their own seeds within a time frame.
+            At last, the received values are combined by using a pre-defined VDF.
+            The main purpose of this prototype is to propose a secure combination of beacons’ results by using a Verifiable Delay Function(VDF).
+
+            It has been built based on <a href="https://eprint.iacr.org/2015/366">Lenstra and Wesoloski(2018) </a>proposal.
+
+            <br><br>
+
+            There are 3 possible states
+          <ul>
+            <li><strong>Closed: </strong> Waiting for next 9-minute time slot for contributions</li>
+            <li><strong>Open: </strong>Open for external contributions</li>
+            <li><strong>Running: </strong>Verifiable Delay Funcition is running</li>
+          </ul>
+
+          <p>Comments:</p>
+          <ul>
+<!--            <li>The Inmetro pre-commitment value (independent part) is combined with all-->
+<!--              contributions received and-->
+<!--              then a VDF is starts just before the next Inmetro beacon number is published</li>-->
+
+            <li>
+              All contributions received from external entities on the web are grouped with the results of Inmetro's
+              Combination Beacon during a time slot. After, they are combined and submitted to the VDF, and the service
+              publishes the random number just before the next Inmetro beacon number is published
+            </li>
+
+
+            <li>After the running state, the results are signed, stored and published together with all
+              parameters used to execute the algorithm</li>
+            <li>Prototype allows a verification of the generated numbers via public API route</li>
+            <li>VDF is not performed if there are no contributions</li>
+
+          </ul>
+
+          </p>
+
+          <p>
+          <p>The service is available via a public REST API. Consumers need to provide a pulse generation time in POSIX format.
+          See <a href="http://en.wikipedia.org/wiki/Unix_time">http://en.wikipedia.org/wiki/Unix_time</a> for more
+          information and <a href="http://www.epochconverter.com">http://www.epochconverter.com</a> for an online timestamp converter.</p>
+
+          <br>
+
+          <strong>Current State: </strong> <br>
+          <span th:text="${uri}"></span>/beacon/2.0/vdf/unicorn/current<br>
+          <span>
+          Example: <a style="word-break: break-word" th:href="@{/beacon/2.0/vdf/unicorn/current}" th:text="|${uri}/beacon/2.0/vdf/unicorn/current|"></a>
+          </span>
+
+          <br><br>
+
+          <strong>Previous Pulse: </strong> <br>
+          <span th:text="${uri}"></span><span style="word-break: break-word">/beacon/2.0/vdf/unicorn/previous/&lt;timestamp&gt;</span> <br>
+          <span th:if="${timestampPrevious!=null}">
+          Example: <a style="word-break: break-word" th:href="@{/beacon/2.0/vdf/unicorn/previous/} + ${timestampPrevious}" th:text="|${uri}/beacon/2.0/vdf/unicorn/previous/${timestampPrevious}|"></a>
+          </span>
+
+          <br><br>
+
+          <strong>Next Pulse:</strong><br>
+          <span th:text="${uri}"></span>/beacon/2.0/vdf/unicorn/next/&lt;timestamp&gt; <br>
+          <span th:if="${timestampPrevious!=null}">
+          Example: <a style="word-break: break-word" th:href="@{/beacon/2.0/vdf/unicorn/next/} + ${timestampPrevious}" th:text="|${uri}/beacon/2.0/vdf/unicorn/next/${timestampPrevious}|"></a>
+          </span>
+
+          <br><br>
+
+          <strong>Last Available Pulse:</strong><br>
+          <span th:text="${uri}"></span>/beacon/2.0/vdf/unicorn/last <br>
+          <span th:if="${timestampPrevious!=null}">
+          Example: <a style="word-break: break-word" th:href="@{/beacon/2.0/vdf/unicorn/last}" th:text="|${uri}/beacon/2.0/vdf/unicorn/last|"></a>
+          </span>
+
+          <br><br>
+
+          <strong>First Pulse:</strong><br>
+          <span th:text="${uri}"></span>/beacon/2.0/vdf/unicorn/first<br>
+          <span th:if="${timestampPrevious!=null}">
+          Example: <a style="word-break: break-word" th:href="@{/beacon/2.0/vdf/unicorn/first}" th:text="|${uri}/beacon/2.0/vdf/unicorn/first|"></a>
+          </span>
+
+          <br><br>
+
+<!--          <strong>Verify Pulse:</strong><br>-->
+<!--          <span th:text="${uri}"></span>/beacon/2.0/pulse/vdf/verify?y=&lt;Y&gt;&x=&lt;X&gt;&iterations=&lt;iterations&gt;<br>-->
+<!--          <span th:if="${timestampPrevious!=null}">-->
+<!--          Example: <a style="word-break: break-word" th:href="@{/beacon/2.0/vdf/unicorn/verify} + ${linkVerify}" th:text="|${uri}/beacon/2.0/vdf/unicorn/verify${linkVerify}|"></a>-->
+<!--          </span>-->
+
+          <br><br>
+
+
+          <strong>Post a value:</strong><br>
+          <strong>URI: </strong> <span th:text="${uri}"></span>/beacon/2.0/vdf/unicorn<br>
+          <strong>Method: </strong>POST
+          <br>
+          <strong>Content-Type: </strong>Content-Type: application/json
+          <br>
+
+          <strong>Body:</strong>
+          <p>
+            {
+            "seed": "myseedValue",
+            "description": "my description",
+            "uri": "my uri"
+            }
+          </p>
+
+          <br><br>
+
+          If a request for a Pulse results in no Pulse found, a 404 response is returned. <br>
+          </p>
+
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="prototype" class="bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+          <h2>Prototype</h2>
+
+            <div class="card">
+                <div class="card-header">
+                    Verificable Delay Function
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Submissions: [<span id="spanStatus">[Status]</span>]</h5>
+
+                  <div id="divClosed">
+                    <p class="card-text" id="pNextSubmission">Next submissions in <span id="spanNextRunInMinutes"></span> minute(s)</p>
+                    <p class="card-text"><strong>Start:</strong> <span id="spanStart">2019-08-31T11:30:00.000Z</span>  <strong>End:</strong> <span id="spanEnd">2019-08-31T11:30:00.000Z</span></p>
+                    <p class="card-text"><strong>Current hash:</strong><span id="spanCurrentHash"></span></p>
+<!--                    <p class="card-text"><strong>Output:</strong><span id="spanOutput"></span></p>-->
+<!--                    <p class="card-text"><strong>See details:</strong><span id="spanOutput"></span></p>-->
+                    <a th:href="@{/beacon/2.0/unicorn/seeds/new}" class="btn btn-primary">Post a new value</a>
+
+<!--                    <a class="btn  btn-link  btn-xs" title="Editar perfil" aria-label="Editar perfil" th:href="@{/cadastro/passo-1/{id}(id=${ep.id + '/editar'})}">-->
+<!--                      <i class="glyphicon glyphicon-user" aria-hidden="true"></i>-->
+<!--                    </a>-->
+
+                  </div>
+                </div>
+
+            </div>
+
+          <div class="card">
+            <div class="card-header">
+              Seed List
+            </div>
+<!--            <div th:replace="fragments/table-seed-list :: table-seed-list">&copy; 2016 The Static Templates</div>-->
+                 <div class="card-body">
+                   <table class="table">
+                     <thead>
+                     <tr>
+                       <th scope="col">Timestamp</th>
+                       <th scope="col">Seed</th>
+                       <th scope="col">Description</th>
+                       <th scope="col">Uri</th>
+                       <th scope="col">CumulativeHash</th>
+                     </tr>
+                     </thead>
+                     <tbody id="table_seed_current">
+                     </tbody>
+                   </table>
+                 <div>
+              </div>
+            </div>
+          </div>
+
+<!--          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut optio velit inventore, expedita quo laboriosam possimus ea consequatur vitae, doloribus consequuntur ex. Nemo assumenda laborum vel, labore ut velit dignissimos.</p>-->
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="viewer" th:fragment="viewer-vdf">
+     <div th:replace="fragments/viewer-vdf :: viewer-vdf">&copy; 2016 The Static Templates</div>
+  </section>
+
+  <section id="contact" class="bg-light" th:fragment="contact">
+    <div th:replace="fragments/contact :: contact">&copy; 2016 The Static Templates</div>
+  </section>
+
+  <div th:replace="fragments/footer :: footer">&copy; 2016 The Static Templates</div>
+
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/scrolling-nav.js"></script>
+
+  <!-- beacon -->
+  <script th:src="@{/vendor/bootstrap/js/bootstrap-datetimepicker.min.js}"></script>
+  <script th:src="@{/js/vdf-unicorn.js}"></script>
+</body>
+
+</html>

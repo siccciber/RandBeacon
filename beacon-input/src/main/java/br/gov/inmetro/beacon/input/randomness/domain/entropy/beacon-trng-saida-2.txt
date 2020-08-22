@@ -1,0 +1,60 @@
+> SetStatus 1484 status_: 8004440a
+@ Open 274
+> SetStatus 1484 status_: 44400
+> FindOpen 617 num_devs: 1
+@ Initialize 722
+> Initialize 738 serialInfo: QWR50103
+> Initialize 739 deviceType_: 3
+> Initialize 767 ftdic->usb_read_timeout: 1388
+> Initialize 768 ftdic->usb_write_timeout: 1388
+@ DetermineDelimiter 1314
+> DetermineDelimiter 1340 bytesAvailable: 0
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+> DetermineDelimiter 1369 elapsedTime: 0.5
+> DetermineDelimiter 1340 bytesAvailable: 1f2
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+> DetermineDelimiter 1369 elapsedTime: 0.943
+> DetermineDelimiter 1340 bytesAvailable: 1f2
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+> DetermineDelimiter 1369 elapsedTime: 19.99
+> DetermineDelimiter 1340 bytesAvailable: 2e
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: 60
+> FtdiCommandResponse 899 commandResponseLength_[command]: 6
+> SetStatus 1484 status_: 44400
+@ FtdiCommandResponse 881
+> FtdiCommandResponse 882 (int)command: c0
+> FtdiCommandResponse 899 commandResponseLength_[command]: 0
+> StartStreaming 942 ftdic->usb_read_timeout: 64
+> StartStreaming 943 ftdic->usb_write_timeout: 64
+> StartStreaming 955 stopCommand: ▒
+> StartStreaming 969 bytesAvailable: 0
+> StartStreaming 987 elapsedTime: 0.121
+> StartStreaming 994 delimCommand: `
+> StartStreaming 1021 bytesAvailable: b
+> StartStreaming 1037 haveBytes: c
+> StartStreaming 1060 startCommand: ▒
+> StartStreaming 1083 ftdic->usb_read_timeout: 1388
+> StartStreaming 1084 ftdic->usb_write_timeout: 1388
+
+70 60 69 E9 A6 B8 A8 98 59 5C B4 F3 50 0D 68 46 C7 32 1E 27 F2 46 42 30 03 36 D8 2F 56 E7 A1 75 A9 8A B1 E0 40 0D F2 E1 A8 83 AE 63 B3 9D 84 AB 0C E7 7A 57 66 9B 9C D3 18 3C 95 1B 5F BF 17 10
+
+EXIT...
