@@ -54,7 +54,7 @@ A maneira mais fácil de executar a solução é executar via docker container.
 
 ```
  1. git clone https://github.com/leandrofpk/beacon-engine.git
- 2. cd beacon-engine
+ 2. cd RandBeacon/beacon-engine
  3. docker-compose up
  4. Apontar o navegador web para http://localhost:8080
 ```
@@ -76,14 +76,14 @@ beacon
 2. Instalar as libs compartilhadas
 
 ```
-cd beacon\beacon-libs
+cd RandBeacon\beacon\beacon-libs
 mvn clean install
 ```
 
 3. Executar ou compilar os projetos
 
 ````
-cd /beacon/<projeto>/
+cd /RandBeacon/<projeto>/
 Executar: mvn spring-boot:run
 Compilar: nvn clean package -DskipTests
 ````
