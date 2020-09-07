@@ -1,5 +1,5 @@
 # beacon-libs
 
-Bibliotecas compartilhadas do projeto [Inmetro Randonness Beacon](https://github.com/leandrofpk/beacon-engin).  Este projeto faz parte do [Beacon Engine](https://github.com/leandrofpk/beacon-engine) do Inmetro.
+Bibliotecas compartilhadas do projeto [Inmetro Randonness Beacon](https://github.com/siccciber/RandBeacon/).
 
-Serviço: beacon.inmetro.gov.br
+[Serviço web] (wwww.beacon.inmetro.gov.br)
