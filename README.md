@@ -1,13 +1,13 @@
 # Inmetro Randomness Beacon
 
 <!--Inmetro Beacon Engine é uma implementação do protocolo [NISTIR 8213]() do NIST.  Este projeto faz parte do Programa 
-de [Mestrado em Tecnologia e Qualidade](http://www.inmetro.gov.br/ensino_e_pesquisa/mpmq/index.asp) do [Inmetro](https://www4.inmetro.gov.br/).
+de [Mestrado em Tecnologia e Qualidade](http://www.inmetro.gov.br/ensino_e_pesquisa/mpmq/index.asp) do [Inmetro](www.gov.br/inmetro).
   O serviço pode ser encontrado aqui: https://beacon.inmetro.gov.br/
 -->
 
 O beacon do inmetro é uma implementação do protocolo NISTIR 8213 
 [(KELSEY et al., 2019)](https://csrc.nist.gov/projects/interoperable-randomness-beacons).  <!-- com algumas particularidades.--> 
-A poposta deste  trabalho é uma arquitetura flexível para uso interno no [Inmetro](https://www4.inmetro.gov.br/), mas que também possa ser adotada por outros laboratórios. O
+A poposta deste  trabalho é uma arquitetura flexível para uso interno no [Inmetro](https://www.gov.br/inmetro/), mas que também possa ser adotada por outros laboratórios. O
 objetivo é propor um processo conceitual onde cada etapa tem suas responsabilidades bem definidas onde uma configuração inicial padrão é fornecida com custo zero de configuração,
 mas que permita pontos de configuração e pontos de extensão que serão detalhados mais a frente.
 
@@ -18,7 +18,7 @@ De maneira resumida, o modelo de operação do protocolo NISTR funciona da segun
 protocolo são calculados para formar uma cadeia. Terceiro, o novo pulso é assinado e armazenado no banco de dados. Neste momento o pulso já se torna disponível para
 utilização.  
 
-Segundo [(BONNEAU; CLARK; GOLDFEDER, 2015;](https://eprint.iacr.org/2015/1015)[CopenhagenInterpretation)](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons), beacons devem atender as seguintes características:
+Segundo [(BONNEAU; CLARK; GOLDFEDER, 2015)](https://eprint.iacr.org/2015/1015), beacons devem atender as seguintes características:
 
 * **Imprevisível:** Nenhum adversário pode ser capaz de prever qualquer informação sobre o número até que ele se torne público;
 * **Imparcial:** Um pulso deve ser estatisticamente próximo a uma sequência aleatória uniforme;	
@@ -27,12 +27,12 @@ Segundo [(BONNEAU; CLARK; GOLDFEDER, 2015;](https://eprint.iacr.org/2015/1015)[C
 
 ## Modules
 
-O inmetro beacon é composto por vários múdulos, são eles:
+O inmetro beacon é composto por 3 microserviços e uma biblioteca compartilhada, são eles:
 
- * [Beacon Input](https://github.com/leandrofpk/beacon-input): Processo de aquisição da entropia;
- * [Beacon Engine](https://github.com/leandrofpk/beacon-engine): Implementação do protocolo NISTIR. Os novos pulsos são gerados neste processo;
- * [Beacon Interface](https://github.com/leandrofpk/beacon-interface): Responsável pela publicação externa de todos os pulsos gerados;   
- * [Beacon libs](https://github.com/leandrofpk/beacon-libs): Bibliotecas são compartilhadas entre os projetos.
+ * [Beacon Input](https://github.com/siccciber/RandBeacon/tree/master/beacon-input): Processo de aquisição da entropia;
+ * [Beacon Engine](https://github.com/siccciber/RandBeacon/tree/master/beacon-engine): Implementação do protocolo NISTIR. Os novos pulsos são gerados neste processo;
+ * [Beacon Interface](https://github.com/siccciber/RandBeacon/tree/master/beacon-interface): Responsável pela publicação externa de todos os pulsos gerados;   
+ * [Beacon libs](https://github.com/siccciber/RandBeacon/tree/master/beacon-libs): Bibliotecas compartilhadas entre os projetos.
 
 <!--
 ## Beacon Engine
@@ -46,7 +46,7 @@ Uma descrição...
 * [Spring](https://spring.io/) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
 * Mysql
-* [RabbitMQ](https://www.rabbitmq.com/): Fila de mensagens utilizadas para integrar os módulos
+* [RabbitMQ](https://www.rabbitmq.com/): Fila de mensagens utilizadas para integrar os microserviços
 
 ## Installation and Getting Started
 
@@ -95,7 +95,7 @@ Usuario: root e senha 123456
 ````
 
 5. Instalar a fila de mensagens RabbitMq e importar as configurações da 
-rquivo [definitions.json](https://github.com/leandrofpk/beacon-engine/blob/master/docker-files/definitions.json). A 
+rquivo [definitions.json](https://github.com/siccciber/RandBeacon/blob/master/beacon-engine/docker-files/definitions.json). A 
 interface de administração possui uma funcionalidade para importação.
 
 <!--https://gist.github.com/lucianfialhobp/14326023cb7f661eaf80 -->
