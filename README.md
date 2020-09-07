@@ -148,4 +148,7 @@ acontecem regularmente em tempos definidos. Exemplo, a geração do pulso ocorre
 ## Repositório antigo (histórico):
 
 1. https://github.com/leandrofpk/beacon-engine
+2. https://github.com/leandrofpk/beacon-interface
+3. https://github.com/leandrofpk/beacon-input
+4. https://github.com/leandrofpk/beacon-libs
 
