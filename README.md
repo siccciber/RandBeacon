@@ -142,3 +142,10 @@ acontecem regularmente em tempos definidos. Exemplo, a geração do pulso ocorre
     1.  Permite que todos os números sejam acessados assim que forem gravados no banco de dados;
 
     2.  É executado sob demanda.
+
+
+
+## Repositório antigo (histórico):
+
+1. https://github.com/leandrofpk/beacon-engine
+
