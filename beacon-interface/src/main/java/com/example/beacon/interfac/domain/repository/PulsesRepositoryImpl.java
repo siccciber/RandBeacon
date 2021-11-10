@@ -1,15 +1,17 @@
 package com.example.beacon.interfac.domain.repository;
 
-import com.example.beacon.interfac.infra.PulseEntity;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.beacon.interfac.infra.PulseEntity;
 
 @Repository
 public class PulsesRepositoryImpl implements PulsesQueries {
@@ -17,21 +19,21 @@ public class PulsesRepositoryImpl implements PulsesQueries {
     @PersistenceContext
     private EntityManager manager;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PulseEntity last(Long chainIndex){
-        Long lastPulseIndex = (Long) manager.createQuery(
-                "select max(p.pulseIndex) from PulseEntity p where p.chainIndex = :chainIndex")
+        Long lastPulseId = (Long) manager.createQuery(
+                "select max(p.id) from PulseEntity p where p.chainIndex = :chainIndex")
                 .setParameter("chainIndex", chainIndex)
                 .getSingleResult();
-
-        if (lastPulseIndex==null){
+    	
+        if (lastPulseId==null){
             return null;
         } else {
-            return findByChainAndPulseIndex(chainIndex, lastPulseIndex);
+            return findByChainAndPulseId(chainIndex, lastPulseId);
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PulseEntity first(Long chainIndex){
         Long firstPulseIndex = (Long) manager.createQuery(
                 "select min(p.pulseIndex) from PulseEntity p where p.chainIndex = :chainIndex")
@@ -41,7 +43,7 @@ public class PulsesRepositoryImpl implements PulsesQueries {
         if (firstPulseIndex==null){
             return null;
         } else {
-            return findByChainAndPulseIndex(chainIndex, firstPulseIndex);
+            return findByChainAndPulseId(chainIndex, firstPulseIndex);
         }
     }
 
@@ -55,20 +57,24 @@ public class PulsesRepositoryImpl implements PulsesQueries {
     }
 
     @Transactional(readOnly = true)
-    public PulseEntity findByChainAndPulseIndex(Long chainIndex, Long pulseIndex){
+    public PulseEntity findByChainAndPulseId(Long chainIndex, Long pulseId){
         try {
             PulseEntity recordEntity = (PulseEntity) manager
                     .createQuery("from PulseEntity p " +
                             "join fetch p.listValueEntities lve " +
-                            "where p.chainIndex = :chainIndex and p.pulseIndex = :pulseIndex")
+                            "where p.chainIndex = :chainIndex and p.id = :pulseId")
                     .setParameter("chainIndex", chainIndex)
-                    .setParameter("pulseIndex", pulseIndex)
+                    .setParameter("pulseId", pulseId)
                     .getSingleResult();
 
             return recordEntity;
         } catch (NoResultException e){
             return null;
-        }
+        } catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
+		return null;
     }
 
 //    @Transactional(readOnly = true)

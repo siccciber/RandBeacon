@@ -1,14 +1,15 @@
 package com.example.beacon.interfac.domain.service;
 
-import com.example.beacon.interfac.domain.repository.PulsesRepository;
-import com.example.beacon.interfac.api.dto.PulseDto;
-import com.example.beacon.interfac.infra.PulseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.beacon.interfac.api.dto.PulseDto;
+import com.example.beacon.interfac.domain.repository.PulsesRepository;
+import com.example.beacon.interfac.infra.PulseEntity;
 
 @Service
 public class QuerySinglePulsesService {
@@ -116,8 +117,8 @@ public class QuerySinglePulsesService {
 
     }
 
-    public PulseDto findByChainAndPulseIndex(Long chainIndex, Long pulseIndex){
-        PulseEntity last = pulsesRepository.findByChainAndPulseIndex(chainIndex, pulseIndex);
+    public PulseDto findByChainAndPulseId(Long chainIndex, Long pulseId){
+        PulseEntity last = pulsesRepository.findByChainAndPulseId(chainIndex, pulseId);
 
         if (last == null){
             return null;
