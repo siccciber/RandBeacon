@@ -46,15 +46,6 @@ public class QuerySinglePulsesService {
         }
     }
 
-//    public PulseDto findByTimestamp(ZonedDateTime timeStamp){
-//        PulseEntity byTimestamp = pulsesRepository.findByTimestamp(timeStamp);
-//        if (byTimestamp==null){
-//            return null;
-//        } else {
-//            return new PulseDto(byTimestamp);
-//        }
-//    }
-
     public PulseDto findSpecificTime(ZonedDateTime specificTimeStamp){
         PulseEntity byTimestamp = pulsesRepository.findByTimestamp(specificTimeStamp);
         if (byTimestamp==null){
