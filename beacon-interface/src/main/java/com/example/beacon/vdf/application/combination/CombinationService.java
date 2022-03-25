@@ -27,7 +27,7 @@ public class CombinationService {
 
     private final Environment env;
 
-    private List<SeedPostDto> seedList;
+    private final List<SeedPostDto> seedList;
 
     private final ICipherSuite cipherSuite;
 
@@ -96,7 +96,7 @@ public class CombinationService {
         seeds.addAll(preDefSeedCombination);
         seeds.addAll(seedBuilder.getHonestPartyCombination());
 
-        seedUnicordCombinationVos = calcSeedConcat(seeds);
+        seedUnicordCombinationVos = new CombinationUncornCumulativeHash().calcSeedConcat(cipherSuite, seeds);
 
         final BigInteger x = new BigInteger(seedUnicordCombinationVos.get(seedUnicordCombinationVos.size() - 1).getCumulativeHash(), 16);
 
@@ -112,21 +112,6 @@ public class CombinationService {
             e.printStackTrace();
         }
         return seedBuilder.getPreDefSeedCombination();
-    }
-
-    private List<SeedUnicordCombinationVo> calcSeedConcat(List<SeedSourceDto> seedList) {
-
-        String currentValue = "";
-        List<SeedUnicordCombinationVo> out = new ArrayList<>();
-
-        for (SeedSourceDto dto : seedList) {
-            currentValue = currentValue + dto.getSeed();
-            String cumulativeDigest = cipherSuite.getDigest(currentValue);
-            ZonedDateTime parse = ZonedDateTime.parse(dto.getTimeStamp(), DateTimeFormatter.ISO_DATE_TIME);
-            out.add(new SeedUnicordCombinationVo(dto.getUri(), dto.getSeed(), dto.getDescription(), cumulativeDigest, parse));
-        }
-
-        return out;
     }
 
     private void runAndPersist(BigInteger x, String timeStamp) throws Exception {
