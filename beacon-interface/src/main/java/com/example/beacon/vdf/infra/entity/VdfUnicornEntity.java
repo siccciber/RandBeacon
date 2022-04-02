@@ -40,6 +40,8 @@ public class VdfUnicornEntity {
     @Embedded
     private ExternalEntity external;
 
+    private int statusCode;
+
     private String combination;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vdfUnicornEntity", cascade = CascadeType.ALL)

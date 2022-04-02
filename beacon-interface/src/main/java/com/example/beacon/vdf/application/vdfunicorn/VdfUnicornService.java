@@ -194,6 +194,8 @@ public class VdfUnicornService {
 
         unicornEntity.setExternal(ExternalEntity.newExternalEntity());
 
+        unicornEntity.setStatusCode(0);
+
         this.seedListUnicordCombination.forEach(SeedUnicordCombinationVo ->
                 unicornEntity.addSeed(new VdfUnicornSeedEntity(SeedUnicordCombinationVo, unicornEntity)));
 
