@@ -184,7 +184,7 @@ public class VdfUnicornService {
             maxPulseIndex = maxPulseIndex + 1L ;
         }
 
-        String uri = env.getProperty("beacon.url") +  "/beacon/vdf/unicorn/pulse/" + maxPulseIndex;
+        String uri = env.getProperty("beacon.url") +  "/beacon/2.0/vdf/unicorn/pulse/" + maxPulseIndex;
 
         VdfUnicornEntity unicornEntity = new VdfUnicornEntity();
         unicornEntity.setUri(uri);
