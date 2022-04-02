@@ -119,6 +119,15 @@ function atualizarRecord(data) {
     lista += '<tr><td>Time:</td>';
     lista += '<td>' + pulse.timeStamp + '</td></tr>';
 
+    lista += '<tr><td>External Source Id:</td>';
+    lista += '<td style="word-break: break-word">' + pulse.external.sourceId + '</td></tr>';
+
+    lista += '<tr><td>External Status Code:</td>';
+    lista += '<td>' + pulse.external.statusCode + '</td></tr>';
+
+    lista += '<tr><td>External Value:</td>';
+    lista += '<td style="word-break: break-word">' + pulse.external.value + '</td></tr>';
+
     lista += '<tr><td>Combination:</td>';
     lista += '<td>' + pulse.combination + '</td></tr>';
 

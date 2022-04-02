@@ -1,6 +1,6 @@
 package com.example.beacon.interfac.api.dto;
 
-import com.example.beacon.interfac.domain.pulse.External;
+import com.example.beacon.interfac.domain.pulse.ExternalDto;
 import com.example.beacon.interfac.domain.pulse.ListValue;
 import com.example.beacon.interfac.infra.PulseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -36,7 +36,7 @@ public class PulseDto {
 
     private String localRandomValue;
 
-    private External external;
+    private ExternalDto external;
 
     private List<ListValue> listValues;
 
@@ -65,7 +65,7 @@ public class PulseDto {
         this.outputValue = pulseEntity.getOutputValue();
         this.statusCode = pulseEntity.getStatusCode();
 
-        this.external =  External.newExternalFromEntity(pulseEntity.getExternalEntity());
+        this.external =  ExternalDto.newExternalFromEntity(pulseEntity.getExternalEntity());
         this.listValues  = convertListValuesToPulse(pulseEntity);
     }
 

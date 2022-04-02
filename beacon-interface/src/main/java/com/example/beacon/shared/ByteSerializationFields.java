@@ -52,6 +52,12 @@ public class ByteSerializationFields {
         byteSerializeHash(entity.getCertificateId());
         encode8(entity.getPulseIndex());
         byteSerializeString(getTimeStampFormated(entity.getTimeStamp()));
+
+        // external
+        byteSerializeHash(entity.getExternal().getSourceId());
+        encode4(entity.getExternal().getStatusCode());
+        byteSerializeHash(entity.getExternal().getValue());
+
         byteSerializeString(entity.getCombination());
         for (CombinationSeedEntity e : entity.getSeedList()) {
             byteSerializeString(getTimeStampFormated(e.getTimeStamp()));
@@ -73,6 +79,12 @@ public class ByteSerializationFields {
         byteSerializeHash(entity.getCertificateId());
         encode8(entity.getPulseIndex());
         byteSerializeString(getTimeStampFormated(entity.getTimeStamp()));
+
+        // external
+        byteSerializeHash(entity.getExternal().getSourceId());
+        encode4(entity.getExternal().getStatusCode());
+        byteSerializeHash(entity.getExternal().getValue());
+
         byteSerializeString(entity.getCombination());
         for (VdfUnicornSeedEntity e : entity.getSeedList()) {
             byteSerializeString(getTimeStampFormated(e.getTimeStamp()));

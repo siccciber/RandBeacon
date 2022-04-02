@@ -21,6 +21,14 @@ public class ExternalEntity {
     public ExternalEntity() {
     }
 
+    public static ExternalEntity newExternalEntity(){
+        return new ExternalEntity("00000000000000000000000000000000000000000000000000000000000000000000000000000000" +
+                "000000000000000000000000000000000000000000000000",
+                new Short("0"),
+                "000000000000000000000000000000000000000000000000000000000000000000000000000000" +
+                        "00000000000000000000000000000000000000000000000000");
+    }
+
     public ExternalEntity(String sourceId, short statusCode, String value) {
         this.sourceId = sourceId;
         this.statusCode = statusCode;

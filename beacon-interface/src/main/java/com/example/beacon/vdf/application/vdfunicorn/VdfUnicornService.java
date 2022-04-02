@@ -3,6 +3,7 @@ package com.example.beacon.vdf.application.vdfunicorn;
 import br.gov.inmetro.beacon.library.ciphersuite.suite0.CipherSuiteBuilder;
 import br.gov.inmetro.beacon.library.ciphersuite.suite0.CriptoUtilService;
 import br.gov.inmetro.beacon.library.ciphersuite.suite0.ICipherSuite;
+import com.example.beacon.interfac.infra.ExternalEntity;
 import com.example.beacon.shared.ByteSerializationFields;
 import com.example.beacon.vdf.VdfSloth;
 import com.example.beacon.vdf.application.VdfSeedDto;
@@ -104,11 +105,6 @@ public class VdfUnicornService {
     }
 
     public void endTimeSlot() throws Exception {
-        if (this.seedListUnicordCombination.isEmpty()){
-            this.statusEnum = StatusEnum.STOPPED;
-            return;
-        }
-
         this.statusEnum = StatusEnum.RUNNING;
         List<SeedSourceDto> honestSeeds = seedBuilder.getHonestPartyUnicorn();
 
@@ -195,6 +191,8 @@ public class VdfUnicornService {
         unicornEntity.setCipherSuite(0);
         unicornEntity.setCombination(env.getProperty("vdf.combination").toUpperCase());
         unicornEntity.setPeriod(Integer.parseInt(env.getProperty("beacon.unicorn.period")));
+
+        unicornEntity.setExternal(ExternalEntity.newExternalEntity());
 
         this.seedListUnicordCombination.forEach(SeedUnicordCombinationVo ->
                 unicornEntity.addSeed(new VdfUnicornSeedEntity(SeedUnicordCombinationVo, unicornEntity)));

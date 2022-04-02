@@ -1,5 +1,6 @@
 package com.example.beacon.vdf.infra.entity;
 
+import com.example.beacon.interfac.infra.ExternalEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,9 @@ public class VdfUnicornEntity {
     private String signatureValue;
 
     private int period;
+
+    @Embedded
+    private ExternalEntity external;
 
     private String combination;
 

@@ -3,6 +3,7 @@ package com.example.beacon.vdf.application.combination;
 import br.gov.inmetro.beacon.library.ciphersuite.suite0.CipherSuiteBuilder;
 import br.gov.inmetro.beacon.library.ciphersuite.suite0.CriptoUtilService;
 import br.gov.inmetro.beacon.library.ciphersuite.suite0.ICipherSuite;
+import com.example.beacon.interfac.infra.ExternalEntity;
 import com.example.beacon.shared.ByteSerializationFields;
 import com.example.beacon.vdf.VdfSloth;
 import com.example.beacon.vdf.application.combination.dto.SeedUnicordCombinationVo;
@@ -90,6 +91,9 @@ public class CombinationServiceCalcAndPersist {
         combinationEntity.setTimeStamp(ZonedDateTime.parse(timeStamp, DateTimeFormatter.ISO_DATE_TIME));
         combinationEntity.setCertificateId(this.certificateId);
         combinationEntity.setCipherSuite(0);
+
+        combinationEntity.setExternal(ExternalEntity.newExternalEntity());
+
         combinationEntity.setCombination(env.getProperty("vdf.combination").toUpperCase());
         combinationEntity.setPeriod(Integer.parseInt(env.getProperty("beacon.combination.period")));
 

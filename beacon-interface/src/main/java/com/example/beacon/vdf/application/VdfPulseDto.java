@@ -1,5 +1,6 @@
 package com.example.beacon.vdf.application;
 
+import com.example.beacon.interfac.domain.pulse.ExternalDto;
 import com.example.beacon.vdf.application.combination.dto.VdfSlothDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -34,6 +35,8 @@ public class VdfPulseDto {
     private String timeStamp;
 
     private int period;
+
+    private ExternalDto external;
 
     private String combination;
 

@@ -1,5 +1,6 @@
 package com.example.beacon.vdf.application.combination;
 
+import com.example.beacon.interfac.domain.pulse.ExternalDto;
 import com.example.beacon.vdf.application.VdfPulseDto;
 import com.example.beacon.vdf.application.VdfSeedDto;
 import com.example.beacon.vdf.application.combination.dto.VdfSlothDto;
@@ -149,6 +150,8 @@ public class CombinationResource {
         dto.setPeriod(entity.getPeriod());
         dto.setCombination(entity.getCombination());
         dto.setOutputValue(entity.getOutputValue());
+
+        dto.setExternal(ExternalDto.newExternalFromEntity(entity.getExternal()));
 
         entity.getSeedList().forEach(s ->
                                 dto.addSeed(new VdfSeedDto(s.getSeed(),
