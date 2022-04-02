@@ -22,9 +22,9 @@ public class CombinationUncornCumulativeHash {
             SeedSourceDto dto = seedList.get(i);
 
             if (i == 0){
-                currentValue = cipherSuite.getDigest(seedList.get(0).getSeed());
+                currentValue = cipherSuite.getDigest(concatValues(seedList.get(0)));
             } else {
-                String teste = currentValue + dto.getSeed();
+                String teste = currentValue + cipherSuite.getDigest(concatValues(dto));
                 currentValue = cipherSuite.getDigest(teste);
             }
 
@@ -34,6 +34,11 @@ public class CombinationUncornCumulativeHash {
         }
 
         return out;
+    }
+
+    private String concatValues(SeedSourceDto dto){
+        String concatValue = dto.getTimeStamp() + dto.getSeed().trim() + dto.getDescription().trim() + dto.getUri().trim();
+        return concatValue;
     }
 
 }
