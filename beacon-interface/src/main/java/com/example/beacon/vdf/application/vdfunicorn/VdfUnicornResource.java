@@ -20,7 +20,7 @@ import static com.example.beacon.vdf.infra.util.DateUtil.getTimeStampFormated;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping(value = "/beacon/2.0/vdf/unicorn", produces= MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = {"/beacon/vdf/unicorn","/beacon/2.0/vdf/unicorn"} ,produces= MediaType.APPLICATION_JSON_VALUE)
 public class VdfUnicornResource {
 
     private final VdfUnicornService vdfUnicornService;
@@ -43,6 +43,11 @@ public class VdfUnicornResource {
         } catch (Exception e){
             return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/rota")
+    public void teste(){
+        System.out.println("uma rota");
     }
 
     @GetMapping("pulse/{pulseIndex}")
