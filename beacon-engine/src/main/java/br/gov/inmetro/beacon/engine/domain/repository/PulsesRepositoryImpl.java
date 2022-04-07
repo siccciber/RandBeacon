@@ -22,7 +22,7 @@ public class PulsesRepositoryImpl implements PulsesQueries {
     @Transactional
     public PulseEntity last(Long chainIndex){
         Long lastPulseIndex = (Long) manager.createQuery(
-                "select max(p.pulseIndex) from PulseEntity p where p.chainIndex = :chainIndex")
+                "select max(p.id) from PulseEntity p where p.chainIndex = :chainIndex")
                 .setParameter("chainIndex", chainIndex)
                 .getSingleResult();
 
@@ -36,7 +36,7 @@ public class PulsesRepositoryImpl implements PulsesQueries {
     @Transactional
     public PulseEntity first(Long chainIndex){
         Long firstPulseIndex = (Long) manager.createQuery(
-                "select min(p.pulseIndex) from PulseEntity p where p.chainIndex = :chainIndex")
+                "select min(p.id) from PulseEntity p where p.chainIndex = :chainIndex")
                 .setParameter("chainIndex", chainIndex)
                 .getSingleResult();
 
@@ -65,6 +65,23 @@ public class PulsesRepositoryImpl implements PulsesQueries {
                             "where p.chainIndex = :chainIndex and p.pulseIndex = :pulseIndex")
                     .setParameter("chainIndex", chainIndex)
                     .setParameter("pulseIndex", pulseIndex)
+                    .getSingleResult();
+
+            return recordEntity;
+        } catch (NoResultException e){
+            return null;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public PulseEntity findByChainAndPulseId(Long chainIndex, Long pulseId){
+        try {
+            PulseEntity recordEntity = (PulseEntity) manager
+                    .createQuery("from PulseEntity p " +
+                            "join fetch p.listValueEntities lve " +
+                            "where p.chainIndex = :chainIndex and p.pulseIndex = :pulseId")
+                    .setParameter("chainIndex", chainIndex)
+                    .setParameter("pulseId", pulseId)
                     .getSingleResult();
 
             return recordEntity;
