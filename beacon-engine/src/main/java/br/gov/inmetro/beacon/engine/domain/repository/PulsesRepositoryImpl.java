@@ -19,24 +19,24 @@ public class PulsesRepositoryImpl implements PulsesQueries {
     @PersistenceContext
     private EntityManager manager;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PulseEntity last(Long chainIndex){
-        Long lastPulseIndex = (Long) manager.createQuery(
+        Long lastPulseId = (Long) manager.createQuery(
                 "select max(p.id) from PulseEntity p where p.chainIndex = :chainIndex")
                 .setParameter("chainIndex", chainIndex)
                 .getSingleResult();
 
-        if (lastPulseIndex==null){
+        if (lastPulseId==null){
             return null;
         } else {
-            return findByChainAndPulseIndex(chainIndex, lastPulseIndex);
+            return findByChainAndPulseId(chainIndex, lastPulseId);
         }
     }
 
     @Transactional
     public PulseEntity first(Long chainIndex){
         Long firstPulseIndex = (Long) manager.createQuery(
-                "select min(p.id) from PulseEntity p where p.chainIndex = :chainIndex")
+                "select min(p.pulseIndex) from PulseEntity p where p.chainIndex = :chainIndex")
                 .setParameter("chainIndex", chainIndex)
                 .getSingleResult();
 
@@ -79,7 +79,7 @@ public class PulsesRepositoryImpl implements PulsesQueries {
             PulseEntity recordEntity = (PulseEntity) manager
                     .createQuery("from PulseEntity p " +
                             "join fetch p.listValueEntities lve " +
-                            "where p.chainIndex = :chainIndex and p.pulseIndex = :pulseId")
+                            "where p.chainIndex = :chainIndex and p.id = :pulseId")
                     .setParameter("chainIndex", chainIndex)
                     .setParameter("pulseId", pulseId)
                     .getSingleResult();
