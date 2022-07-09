@@ -20,7 +20,11 @@ public interface CombinationRepository extends JpaRepository<CombinationEntity, 
     @Query(value = "SELECT distinct p from CombinationEntity p left join fetch p.seedList l where p.timeStamp >= ?1 and p.timeStamp <=?2 order by p.timeStamp")
     List<CombinationEntity> findSequence(ZonedDateTime timeStamp1, ZonedDateTime timeStamp2);
 
+    @Deprecated // may have performance issues - use findMaxId
     @Query(value = "select distinct max(p.pulseIndex) from CombinationEntity p")
+    Long findMaxPulseIndex();
+
+    @Query(value = "select distinct max(p.id) from CombinationEntity p")
     Long findMaxId();
 
     @Query(value = "select p from CombinationEntity p left join fetch p.seedList where p.pulseIndex = ?1")

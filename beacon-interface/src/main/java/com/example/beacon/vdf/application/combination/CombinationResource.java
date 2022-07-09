@@ -120,7 +120,7 @@ public class CombinationResource {
     public ResponseEntity last(){
         try {
 
-            Long maxId = combinationRepository.findMaxId();
+            Long maxId = combinationRepository.findMaxPulseIndex();
 
             CombinationEntity byPulseIndex = combinationRepository.findByPulseIndex(maxId);
 

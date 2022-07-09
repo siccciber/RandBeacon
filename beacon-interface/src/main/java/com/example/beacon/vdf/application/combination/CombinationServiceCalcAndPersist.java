@@ -14,6 +14,7 @@ import com.example.beacon.vdf.repository.CombinationRepository;
 import com.example.beacon.vdf.scheduling.CombinationResultDto;
 import com.example.beacon.vdf.sources.SeedBuilder;
 import com.example.beacon.vdf.sources.SeedCombinationResult;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +28,20 @@ import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class CombinationServiceCalcAndPersist {
-
     private final CombinationRepository combinationRepository;
-
     private final String certificateId = "04c5dc3b40d25294c55f9bc2496fd4fe9340c1308cd073900014e6c214933c7f7737227fc5e4527298b9e95a67ad92e0310b37a77557a10518ced0ce1743e132";
-
     private final ICipherSuite cipherSuite;
-
     private final SeedBuilder seedBuilder;
-
     private final VdfUnicornService vdfUnicornService;
-
     private final Environment env;
-
     private final SeedCombinationResult seedCombinationResult;
-
-    private static final Logger logger = LoggerFactory.getLogger(CombinationServiceCalcAndPersist.class);
 
     @Autowired
     public CombinationServiceCalcAndPersist(CombinationRepository combinationRepository,
@@ -60,21 +55,21 @@ public class CombinationServiceCalcAndPersist {
         this.seedCombinationResult = seedCombinationResult;
     }
 
-
     @Async("threadPoolTaskExecutor")
     public void run(String timeStamp, List<SeedUnicordCombinationVo> seedUnicordCombinationVos, BigInteger x) throws Exception {
         int iterations = Integer.parseInt(env.getProperty("beacon.combination.iterations"));
 
-        logger.warn("Start combination sloth");
+        log.warn("Start combination sloth");
         BigInteger y = VdfSloth.mod_op(x, iterations);
-        logger.warn("End combination sloth");
+        log.warn("End combination sloth");
 
         persist(timeStamp, seedUnicordCombinationVos, iterations, x, y);
     }
 
     @Transactional
     protected void persist(String timeStamp, List<SeedUnicordCombinationVo> seedUnicordCombinationVos, int iterations, BigInteger x, BigInteger y) throws Exception {
-        Long maxPulseIndex = combinationRepository.findMaxId();
+        Long maxPulseIndex = combinationRepository.findMaxPulseIndex();
+        PrivateKey privateKey = CriptoUtilService.loadPrivateKeyPkcs1(env.getProperty("beacon.x509.privatekey"));
 
         if (maxPulseIndex==null){
             maxPulseIndex = 1L;
@@ -105,11 +100,12 @@ public class CombinationServiceCalcAndPersist {
         combinationEntity.setY(y.toString());
         combinationEntity.setIterations(iterations);
 
+        combinationEntity.setStatusCode(getStatusCode(combinationEntity));
+
         //sign
         ByteSerializationFields serialization = new ByteSerializationFields(combinationEntity);
         ByteArrayOutputStream baos = serialization.getBaos();
 
-        PrivateKey privateKey = CriptoUtilService.loadPrivateKeyPkcs1(env.getProperty("beacon.x509.privatekey"));
         String signature = cipherSuite.signPkcs15(privateKey, serialization.getBaos().toByteArray());
         combinationEntity.setSignatureValue(signature);
 
@@ -123,7 +119,7 @@ public class CombinationServiceCalcAndPersist {
         CombinationResultDto combinationResultDto = new CombinationResultDto(combinationEntity.getTimeStamp().toString(), combinationEntity.getOutputValue(), combinationEntity.getUri());
         sendToUnicorn(combinationResultDto);
 
-        logger.warn("Stop run:");
+        log.warn("Stop run:");
     }
 
     protected void sendToUnicorn(CombinationResultDto combinationResultDto) throws Exception {
@@ -131,9 +127,31 @@ public class CombinationServiceCalcAndPersist {
             return;
         }
 
-        logger.warn(combinationResultDto.toString());
+        log.warn(combinationResultDto.toString());
         seedCombinationResult.setCombinationResultDto(combinationResultDto);
         vdfUnicornService.endTimeSlot();
+    }
+
+    private int getStatusCode(CombinationEntity currentEntity){
+        int statusCode;
+
+        Long maxId = combinationRepository.findMaxId();
+        Optional<CombinationEntity> previewsPulse = combinationRepository.findById(maxId);
+
+        if (previewsPulse.isPresent()){
+            ZonedDateTime previewPulseTimeStamp = previewsPulse.get().getTimeStamp();
+            ZonedDateTime currentPulseTimesptamp = currentEntity.getTimeStamp();
+
+            long betweenInMinutes = ChronoUnit.MINUTES.between(previewPulseTimeStamp, currentPulseTimesptamp);
+            if (betweenInMinutes != 10L){
+                statusCode = 2;
+            } else {
+                statusCode = 0;
+            }
+        } else {
+            statusCode = 1;
+        }
+        return statusCode;
     }
 
 }

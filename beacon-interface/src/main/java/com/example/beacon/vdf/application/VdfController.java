@@ -38,7 +38,7 @@ public class VdfController {
 
         mv.addObject("uri", appUri.getUri());
 
-        Long maxId = combinationRepository.findMaxId();
+        Long maxId = combinationRepository.findMaxPulseIndex();
         CombinationEntity previous = null;
         if (maxId!=null) {
             CombinationEntity byPulseIndex = combinationRepository.findByPulseIndex(maxId);
