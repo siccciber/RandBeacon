@@ -18,10 +18,10 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableScheduling
 @EnableRabbit
-public class Application {
+public class BeaconInterfaceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(BeaconInterfaceApplication.class, args);
 	}
 
 	@EventListener(ContextRefreshedEvent.class)

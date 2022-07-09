@@ -12,10 +12,10 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableRabbit
 @EnableAsync
-public class BeaconApplication {
+public class BeaconEngineApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BeaconApplication.class, args);
+		SpringApplication.run(BeaconEngineApplication.class, args);
 	}
 
 	@EventListener(ContextRefreshedEvent.class)
